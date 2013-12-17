@@ -7,17 +7,32 @@
 //
 
 #import "AppDelegate.h"
-
-@implementation AppDelegate
+#import "VariableStore.h"
+#import <CoreLocation/CoreLocation.h>
+#import <Foundation/Foundation.h>
+#import "UIConfigViewController.h"
+@implementation AppDelegate{
+    CLLocationManager *locationManager;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    //self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
+    //self.window.backgroundColor = [UIColor whiteColor];
+    //[self.window makeKeyAndVisible];
+    VariableStore *vs =[VariableStore sharedInstance];
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate=self;
+    locationManager.desiredAccuracy=kCLLocationAccuracyBest;
+    locationManager.distanceFilter=kCLDistanceFilterNone;
+    [locationManager startUpdatingLocation];
+    [locationManager stopUpdatingLocation];
+    vs.myLocation=locationManager.location;
+    vs.domain=@"36.224.26.198";    
     return YES;
 }
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
